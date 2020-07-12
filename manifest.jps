@@ -9,6 +9,7 @@ description:
   
 categories:
 - apps/popular
+- apps/other
 
 nodes:
   nodeType: apache2
