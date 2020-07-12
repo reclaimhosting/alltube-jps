@@ -1,0 +1,41 @@
+type: install
+id: alltube
+name: AllTube
+baseUrl: https://raw.githubusercontent.com/reclaimhosting/alltube-jps/master
+logo: images/alltube-logo.png
+
+description: 
+  text: A web-based frontend for youtube-dl, allowing you to easily download web-based videos from many different hosting services including YouTube, Vimeo, and more.
+  
+categories:
+- apps/popular
+
+nodes:
+  nodeType: apache2
+  nodeGroup: cp
+  cloudlets: 8
+  extip: false
+  displayName: Application Server
+
+onInstall:
+  - configSystem
+  - deployArchive
+
+actions:
+  deployArchive:
+    deploy:
+      archive: https://cloud-jps-archives.s3.amazonaws.com/alltube-2.3.0.zip
+      name: alltube-2.3.0
+      context: ROOT
+
+  configSystem:
+    cmd[cp]: |-
+      sed -i 's|;extension=intl.so|extension=intl.so|g' /etc/php.ini;
+      sudo /etc/init.d/httpd restart;
+    user: root
+     
+ssl: true
+skipNodeEmails: true
+  
+success: | 
+  **Site URL**: [https://${env.domain}/](https://${env.domain}/)
